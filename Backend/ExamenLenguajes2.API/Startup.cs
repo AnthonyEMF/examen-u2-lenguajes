@@ -31,11 +31,18 @@ namespace ExamenLenguajes2.API
 
 			// DbContext
 			services.AddDbContext<Examen2Context>(options =>
-			options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddDbContext<Examen2LogsContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("LogsConnection")));
 
 			// Custom Services
 			services.AddTransient<IAuthService, AuthService>();
 			services.AddTransient<IAuditService, AuditService>();
+			services.AddTransient<IBalancesService, BalancesService>();
+			services.AddTransient<ITransactionsService, TransactionsService>();
+			services.AddTransient<IAccountsService, AccountsService>();
+			//services.AddTransient<IEntriesService, EntriesService>();
+			services.AddTransient<ILogsService, LogsService>();
 
 			// Security Identity
 			services.AddIdentity<UserEntity, IdentityRole>(options =>

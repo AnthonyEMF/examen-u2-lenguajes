@@ -5,8 +5,13 @@ namespace ExamenLenguajes2.API.Database.Entities
 {
 	public class UserEntity : IdentityUser
 	{
-		[StringLength(100, MinimumLength = 5)]
+		[StringLength(150, MinimumLength = 5)]
 		[Required]
-		public string Name { get; set; }
+		public string FullName { get; set; }
+
+		[StringLength(450)]
+		public string RefreshToken { get; set; }
+
+		public DateTime RefreshTokenExpire { get; set; }
 	}
 }

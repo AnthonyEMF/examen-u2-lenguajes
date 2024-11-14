@@ -1,0 +1,21 @@
+meta {
+  name: Edit
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{PATH}}/transactions/4B4EEB59-1F48-4F32-9D1E-BF5B6E4C8F36
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN}}
+}
+
+body:json {
+  {
+    "isActive": true
+  }
+}

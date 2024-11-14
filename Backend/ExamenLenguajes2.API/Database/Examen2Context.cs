@@ -1,4 +1,5 @@
-﻿using ExamenLenguajes2.API.Database.Entities;
+﻿using ExamenLenguajes2.API.Database.Configuration;
+using ExamenLenguajes2.API.Database.Entities;
 using ExamenLenguajes2.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace ExamenLenguajes2.API.Database
 	{
 		private readonly IAuditService _auditService;
 
-		public Examen2Context(DbContextOptions options, IAuditService auditService) : base(options)
+		public Examen2Context(DbContextOptions<Examen2Context> options, IAuditService auditService) : base(options)
         {
 			this._auditService = auditService;
 		}
@@ -28,8 +29,11 @@ namespace ExamenLenguajes2.API.Database
 			modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("users_logins");
 			modelBuilder.Entity<IdentityUserToken<string>>().ToTable("users_tokens");
 
-			// Configuration
-			//modelBuilder.ApplyConfiguration(new ...Configuration());
+			// Configurations
+			modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+			modelBuilder.ApplyConfiguration(new EntryConfiguration());
+			modelBuilder.ApplyConfiguration(new AccountConfiguration());
+			modelBuilder.ApplyConfiguration(new BalanceConfiguration());
 
 			// Set FKs OnRestrict (Evitar cascada)
 			var eTypes = modelBuilder.Model.GetEntityTypes();
@@ -70,6 +74,9 @@ namespace ExamenLenguajes2.API.Database
 			return base.SaveChangesAsync(cancellationToken);
 		}
 
-		//public DbSet<...Entity> ... { get; set; }
+		public DbSet<TransactionEntity> Transactions { get; set; }
+		public DbSet<EntryEntity> Entries { get; set; }
+		public DbSet<AccountEntity> Accounts { get; set; }
+		public DbSet<BalanceEntity> Balances { get; set; }
 	}
 }
