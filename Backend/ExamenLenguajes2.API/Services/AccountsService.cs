@@ -15,6 +15,7 @@ namespace ExamenLenguajes2.API.Services
 		private readonly ILogsService _logsService;
 		private readonly IMapper _mapper;
 		private readonly ILogger<AccountsService> _logger;
+
 		private readonly int PAGE_SIZE;
 
 		public AccountsService(
