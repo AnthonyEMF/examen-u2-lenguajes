@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamenLenguajes2.API.Migrations
 {
     [DbContext(typeof(Examen2Context))]
-    [Migration("20241114062423_Init")]
+    [Migration("20241114175134_Init")]
     partial class Init
     {
         /// <inheritdoc />

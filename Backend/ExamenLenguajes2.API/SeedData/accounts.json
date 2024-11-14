@@ -17,7 +17,7 @@
   },
   {
     "id": "b289f451-6a36-4416-b0b9-6b70c6c9885f",
-    "code": "101101",
+    "code": "10101",
     "name": "Caja chica",
     "allowMovement": true,
     "parentId": "a1e2b947-d9b5-4290-8b6d-bae6d8c1fefd",
@@ -25,7 +25,7 @@
   },
   {
     "id": "c1df36e7-d57c-4e2e-9bbd-8b4379f12bdc",
-    "code": "101102",
+    "code": "10102",
     "name": "Caja general",
     "allowMovement": true,
     "parentId": "a1e2b947-d9b5-4290-8b6d-bae6d8c1fefd",
@@ -33,7 +33,7 @@
   },
   {
     "id": "d0afcd5b-8b9d-41b4-8394-2c5a0a7f7ea5",
-    "code": "105",
+    "code": "102",
     "name": "Cuentas por cobrar",
     "allowMovement": true,
     "parentId": "1c0b4e57-57da-4d62-8be3-e2c83430a145",
@@ -57,7 +57,7 @@
   },
   {
     "id": "f63af6e9-dbe8-4a82-9097-e7b58fd209e5",
-    "code": "201106",
+    "code": "20101",
     "name": "Otras cuentas por pagar",
     "allowMovement": true,
     "parentId": "eb573e5c-5a63-486e-b72d-9bb53a31aab5",
@@ -73,7 +73,7 @@
   },
   {
     "id": "2b93f22b-11a1-4a1b-8fb1-cdf79f9a5e72",
-    "code": "301101",
+    "code": "301",
     "name": "Aportaciones",
     "allowMovement": true,
     "parentId": "1a46fb25-7b3d-4dd6-85d9-06a5e37b1c33",

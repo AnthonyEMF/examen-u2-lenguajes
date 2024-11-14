@@ -1,11 +1,11 @@
 meta {
-  name: Edit
+  name: Create
   type: http
   seq: 1
 }
 
-put {
-  url: {{PATH}}/transactions/7c02da76-3fa7-49a5-af6d-3afc5c6e539e
+post {
+  url: {{PATH}}/accounts
   body: json
   auth: bearer
 }
@@ -16,6 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "isActive": false
+    "parentId": null,
+    "name": "Costos"
   }
 }

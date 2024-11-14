@@ -11,20 +11,16 @@ namespace ExamenLenguajes2.API.Database.Entities
 		public Guid Id { get; set; }
 
 		[Required]
-		[Column("user_id")]
-		public string UserId { get; set; }
-		[ForeignKey(nameof(UserId))]
-		public virtual UserEntity User { get; set; }
-
-		[Required]
-		[Column("date")]
-		public DateTime Date { get; set; }
-
-		[Required]
 		[Column("action")]
-		public string Action { get; set; } // "Creación", "Modificación", "Eliminación"
+		public string Action { get; set; } 
 
 		[Column("description")]
 		public string Description { get; set; }
+
+		[Column("user")]
+		public string User { get; set; }
+
+		[Column("date")]
+		public DateTime Date { get; set; }
 	}
 }

@@ -45,9 +45,9 @@ namespace ExamenLenguajes2.API.Controllers
 
 		[HttpPut("{id}")]
 		[Authorize(Roles = $"{RolesConstant.USER}")]
-		public async Task<ActionResult<ResponseDto<TransactionDto>>> Edit(TransactionEditDto dto, Guid id)
+		public async Task<ActionResult<ResponseDto<TransactionDto>>> SoftDelete(TransactionEditDto dto, Guid id)
 		{
-			var response = await _transactionsService.ToggleTransactionStatusAsync(dto, id);
+			var response = await _transactionsService.DeactivateTransactionAsync(dto, id);
 			return StatusCode(response.StatusCode, response);
 		}
 	}

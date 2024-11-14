@@ -18,6 +18,7 @@ namespace ExamenLenguajes2.API.Services
 		private readonly SignInManager<UserEntity> _signInManager;
 		private readonly UserManager<UserEntity> _userManager;
 		private readonly Examen2Context _context;
+		private readonly ILogsService _logsService;
 		private readonly IConfiguration _configuration;
 		private readonly ILogger<AuthService> _logger;
 
@@ -25,12 +26,14 @@ namespace ExamenLenguajes2.API.Services
 			SignInManager<UserEntity> signInManager,
 			UserManager<UserEntity> userManager,
 			Examen2Context context,
+			ILogsService logsService,
 			IConfiguration configuration,
 			ILogger<AuthService> logger)
         {
 			this._signInManager = signInManager;
 			this._userManager = userManager;
 			this._context = context;
+			this._logsService = logsService;
 			this._configuration = configuration;
 			this._logger = logger;
 		}
@@ -56,6 +59,9 @@ namespace ExamenLenguajes2.API.Services
 				// Guardar
 				_context.Entry(userEntity);
 				await _context.SaveChangesAsync();
+
+				// Registrar en logs
+				await _logsService.LogActionAsync("Inicio de sesión", $"El usuario {userEntity.FullName} ha iniciado sesión.");
 
 				return new ResponseDto<LoginResponseDto>
 				{

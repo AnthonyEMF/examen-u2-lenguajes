@@ -30,7 +30,7 @@ namespace ExamenLenguajes2.API.Database.Entities
 
 		[Required(ErrorMessage = "Definir el estado de la partida es requerido.")]
 		[Column("is_active")]
-		public bool IsActive { get; set; } // En lugar de borrar la cuenta solo vamos a desactivarla 
+		public bool IsActive { get; set; }
 
 		// Relación de navegación con Balance
 		public virtual BalanceEntity Balance { get; set; }

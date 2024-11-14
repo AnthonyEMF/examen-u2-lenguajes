@@ -14,6 +14,7 @@ namespace ExamenLenguajes2.API.Services
 	{
 		private readonly Examen2Context _context;
 		private readonly UserManager<UserEntity> _userManager;
+		private readonly ILogsService _logsService;
 		private readonly IMapper _mapper;
 		private readonly ILogger<TransactionsService> _logger;
 		private readonly int PAGE_SIZE;
@@ -21,12 +22,14 @@ namespace ExamenLenguajes2.API.Services
 		public TransactionsService(
 			Examen2Context context,
 			UserManager<UserEntity> userManager,
+			ILogsService logsService,
 			IMapper mapper,
 			ILogger<TransactionsService> logger,
 			IConfiguration configuration)
         {
 			this._context = context;
 			this._userManager = userManager;
+			this._logsService = logsService;
 			this._mapper = mapper;
 			this._logger = logger;
 			PAGE_SIZE = configuration.GetValue<int>("PageSize");
@@ -241,6 +244,9 @@ namespace ExamenLenguajes2.API.Services
 					_context.Transactions.Add(transactionEntity);
 					await _context.SaveChangesAsync();
 
+					// Registrar en los logs
+					await _logsService.LogActionAsync("Creación", $"Se creó la partida número: {transactionEntity.Number}");
+
 					await transaction.CommitAsync();
 
 					var transactionDto = _mapper.Map<TransactionDto>(transactionEntity);
@@ -267,7 +273,7 @@ namespace ExamenLenguajes2.API.Services
 			}
 		}
 
-		public async Task<ResponseDto<TransactionDto>> ToggleTransactionStatusAsync(TransactionEditDto dto, Guid id)
+		public async Task<ResponseDto<TransactionDto>> DeactivateTransactionAsync(TransactionEditDto dto, Guid id)
 		{
 			using (var transaction = await _context.Database.BeginTransactionAsync())
 			{
@@ -281,7 +287,18 @@ namespace ExamenLenguajes2.API.Services
 						{
 							StatusCode = 404,
 							Status = false,
-							Message = "La transacción no existe."
+							Message = "La partida no existe."
+						};
+					}
+
+					// Si la partida ya esta desactivada, no permitir activarla nuevamente
+					if (!transactionEntity.IsActive && dto.IsActive)
+					{
+						return new ResponseDto<TransactionDto>
+						{
+							StatusCode = 400,
+							Status = false,
+							Message = "La partida ya esta desactivada y no puede ser activada nuevamente."
 						};
 					}
 
@@ -292,12 +309,15 @@ namespace ExamenLenguajes2.API.Services
 						{
 							StatusCode = 400,
 							Status = false,
-							Message = "El estado de la partida ya está en el valor solicitado."
+							Message = "La partida ya se encuentra en el estado que se intenta cambiar."
 						};
 					}
 
-					// Cambiar el estado de la partida
-					transactionEntity.IsActive = dto.IsActive;
+					// Desactivar la partida
+					if (!dto.IsActive)
+					{
+						transactionEntity.IsActive = false;
+					}
 
 					// Revertir los saldos si la partida se desactiva
 					if (!dto.IsActive)
@@ -329,70 +349,13 @@ namespace ExamenLenguajes2.API.Services
 							}
 						}
 					}
-					else
-					{
-						// Si se activa, recalcular los saldos según las entradas
-						decimal totalDebit = 0;
-						decimal totalCredit = 0;
 
-						foreach (var entry in transactionEntity.Entries)
-						{
-							var account = await _context.Accounts.FindAsync(entry.AccountId);
-							var balance = await _context.Balances.FirstOrDefaultAsync(b =>
-								b.AccountId == entry.AccountId &&
-								b.Month == transactionEntity.Date.Month &&
-								b.Year == transactionEntity.Date.Year);
-
-							if (balance == null)
-							{
-								balance = new BalanceEntity
-								{
-									Id = $"{entry.AccountId}{transactionEntity.Date.Month}{transactionEntity.Date.Year}",
-									Month = transactionEntity.Date.Month,
-									Year = transactionEntity.Date.Year,
-									AccountId = entry.AccountId,
-									BalanceAmount = 0
-								};
-								_context.Balances.Add(balance);
-							}
-
-							// Actualizar el saldo segun tipo
-							if (entry.Type == "CRÉDITO")
-							{
-								balance.BalanceAmount += entry.Amount;
-								totalCredit += entry.Amount;
-							}
-							else if (entry.Type == "DÉBITO")
-							{
-								balance.BalanceAmount -= entry.Amount;
-								totalDebit += entry.Amount;
-							}
-
-							// Actualizar saldos de las cuentas padre
-							if (account?.ParentId != null)
-							{
-								await UpdateParentAccountBalance(account.ParentId.Value, entry.Type, entry.Amount);
-							}
-						}
-
-						// Validar que los saldos de débitos y créditos cuadran al activarse
-						if (totalDebit != totalCredit)
-						{
-							return new ResponseDto<TransactionDto>
-							{
-								StatusCode = 400,
-								Status = false,
-								Message = "El total de débitos no cuadra con el total de créditos."
-							};
-						}
-
-						transactionEntity.TotalCredit = totalCredit;
-						transactionEntity.TotalDebit = totalDebit;
-					}
-
-					// Guardar los cambios y completar la transacción
+					// Guardar 
 					await _context.SaveChangesAsync();
 					await transaction.CommitAsync();
+
+					// Registrar en los logs
+					await _logsService.LogActionAsync("Edición", $"Se desactivó la partida número: {transactionEntity.Number}");
 
 					var transactionDto = _mapper.Map<TransactionDto>(transactionEntity);
 
@@ -407,7 +370,7 @@ namespace ExamenLenguajes2.API.Services
 				catch (Exception ex)
 				{
 					await transaction.RollbackAsync();
-					_logger.LogError(ex, "Error al actualizar el estado de la pertida.");
+					_logger.LogError(ex, "Error al actualizar el estado de la partida.");
 					return new ResponseDto<TransactionDto>
 					{
 						StatusCode = 500,

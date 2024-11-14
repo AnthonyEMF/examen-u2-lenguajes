@@ -7,7 +7,6 @@
 		public string Name { get; set; }
 		public bool AllowMovement { get; set; }
 		public Guid? ParentId { get; set; }
-		public bool IsActive { get; set; }
-		public decimal BalanceAmount { get; set; }
+        public bool IsActive { get; set; }
 	}
 }

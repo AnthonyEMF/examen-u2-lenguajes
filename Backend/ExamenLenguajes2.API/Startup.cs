@@ -1,6 +1,7 @@
 ﻿using ExamenLenguajes2.API.Database;
 using ExamenLenguajes2.API.Database.Entities;
 using ExamenLenguajes2.API.Helpers;
+using ExamenLenguajes2.API.Middlewares;
 using ExamenLenguajes2.API.Services;
 using ExamenLenguajes2.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -41,8 +42,10 @@ namespace ExamenLenguajes2.API
 			services.AddTransient<IBalancesService, BalancesService>();
 			services.AddTransient<ITransactionsService, TransactionsService>();
 			services.AddTransient<IAccountsService, AccountsService>();
-			//services.AddTransient<IEntriesService, EntriesService>();
-			services.AddTransient<ILogsService, LogsService>();
+
+			// Logs Service
+			//services.AddTransient<ILogsService, LogsService>();
+			services.AddScoped<ILogsService, LogsService>();
 
 			// Security Identity
 			services.AddIdentity<UserEntity, IdentityRole>(options =>
@@ -96,6 +99,8 @@ namespace ExamenLenguajes2.API
 			}
 
 			app.UseHttpsRedirection();
+
+			app.UseMiddleware<LoggingMiddleware>();
 
 			app.UseRouting();
 
