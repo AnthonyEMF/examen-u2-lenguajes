@@ -27,8 +27,8 @@ export const Pagination = ({
         <button
           key={generateId()}
           onClick={() => handleCurrentPage(index + 1)}
-          className={`text-white px-4 py-2 rounded
-            ${currentPage === index + 1 ? "bg-gray-600 text-white" : "hover:bg-gray-500"}`}
+          className={`text-gray-600 bg-gray-300 px-4 py-2 rounded
+            ${currentPage === index + 1 ? "bg-gray-600 text-white" : "hover:bg-gray-500 hover:text-white"}`}
         >
           {index + 1}
         </button>

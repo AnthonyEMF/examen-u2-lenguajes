@@ -72,11 +72,12 @@ export const Nav = () => {
           )}
           
            {isAuthenticated ? (
-            <button 
+            <Link
+            to={'/home'} 
             onClick={handleLogout}
             className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0">
                 Cerrar Sesión
-            </button>
+            </Link>
           ) : ( 
             <Link
             to="/security/login"

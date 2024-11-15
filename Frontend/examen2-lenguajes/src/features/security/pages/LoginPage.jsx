@@ -37,7 +37,7 @@ export const LoginPage = () => {
   }
 
   return (
-    <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md my-40">
+    <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md mb-40">
       <div className="p-8 xs:p-4 w-full max-w-md bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Iniciar Sesión</h1>
 

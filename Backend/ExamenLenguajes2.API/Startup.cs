@@ -100,7 +100,7 @@ namespace ExamenLenguajes2.API
 
 			app.UseHttpsRedirection();
 
-			app.UseMiddleware<LoggingMiddleware>();
+			//app.UseMiddleware<LoggingMiddleware>();
 
 			app.UseRouting();
 
