@@ -1,69 +1,71 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const initialTransactions = [
-  { number: 1, description: "Compra de materiales", status: "Activa" },
-  { number: 2, description: "Pago de servicios", status: "Desactivada" },
-  { number: 3, description: "Venta de productos", status: "Activa" },
-  { number: 4, description: "Pago de servicios", status: "Desactivada" },
-  { number: 5, description: "Venta de productos", status: "Activa" },
-  { number: 6, description: "Pago de servicios", status: "Desactivada" },
-  { number: 7, description: "Venta de productos", status: "Activa" },
-  { number: 8, description: "Pago de servicios", status: "Desactivada" },
-  { number: 9, description: "Venta de productos", status: "Activa" },
-  { number: 10, description: "Pago de servicios", status: "Desactivada" },
-  { number: 11, description: "Venta de productos", status: "Activa" },
-];
+import { useTransactions } from '../hooks/useTransactions';
+import { Pagination } from '../../../shared/components/Pagination';
+import { TransactionRowItem } from '../components';
 
 export const TransactionsPage = () => {
-  const [search, setSearch] = useState("");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [searchTerm, setSearchTerm] = useState(selectedCategory || "");
-  // const [fetching, setFetching] = useState(true);
+  const {transactions, loadTransactions, isLoading} = useTransactions();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [fetching, setFetching] = useState(true);
 
-  const filteredTransactions = initialTransactions.filter(transaction =>
-    transaction.description.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    if (fetching) {
+      loadTransactions(searchTerm, currentPage);
+      setFetching(false);
+    }
+  }, [fetching, searchTerm, currentPage]);
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   setFetching(true);
-  // };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFetching(true);
+  };
 
-  // // Cambiar a una página especifica
-  // const handleCurrentPage = (index = 1) => {
-  //   setCurrentPage(index);
-  //   setFetching(true);
-  // };
+  // Cambiar a una página especifica
+  const handleCurrentPage = (index = 1) => {
+    setCurrentPage(index);
+    setFetching(true);
+  };
 
-  // // Ir a página anterior
-  // const handlePreviousPage = () => {
-  //   if (events.data.hasPreviousPage) {
-  //     setCurrentPage((prevPage) => prevPage - 1);
-  //     setFetching(true);
-  //   }
-  // };
+  // Ir a página anterior
+  const handlePreviousPage = () => {
+    if (transactions.data.hasPreviousPage) {
+      setCurrentPage((prevPage) => prevPage - 1);
+      setFetching(true);
+    }
+  };
 
-  // // Ir a página siguiente
-  // const handleNextPage = () => {
-  //   if (events.data.hasNextPage) {
-  //     setCurrentPage((prevPage) => prevPage + 1);
-  //     setFetching(true);
-  //   }
-  // };
+  // Ir a página siguiente
+  const handleNextPage = () => {
+    if (transactions.data.hasNextPage) {
+      setCurrentPage((prevPage) => prevPage + 1);
+      setFetching(true);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center w-full h-full p-4 bg-gray-100">
       <div className="w-full max-w-3xl p-6 bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between pb-4 border-b">
           <h1 className="text-2xl font-bold text-gray-800">Partidas Contables</h1>
-          <input
-            type="text"
-            placeholder="Buscar partida..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-500"
-          />
+          <form onSubmit={handleSubmit}>
+            <div className="flex">
+
+              <input
+                type="text"
+                placeholder="Buscar partida..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="px-4 py-2 border rounded-lg rounded-r-none focus:outline-none focus:border-gray-500"
+                />
+                <button
+                  type="submit"
+                  className="bg-gray-600 text-white px-4 py-2 rounded-r-md hover:bg-gray-500"
+                > Buscar
+                </button>
+            </div>
+            </form>
         </div>
         
         <table className="min-w-full divide-y divide-gray-200 mt-6">
@@ -84,39 +86,19 @@ export const TransactionsPage = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredTransactions.length > 0 ? (
-              filteredTransactions.map((transaction) => (
-                <tr key={transaction.number}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {transaction.number}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {transaction.description}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        transaction.status === "Activa"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {transaction.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link
-                      to={`/transactions-details/:id`}
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      Ver detalles
-                    </Link>
-                  </td>
-                </tr>
+          {isLoading ? (
+              <tr>
+                <td colSpan="5" className="px-4 py-2 text-center text-gray-500">
+                  Cargando...
+                </td>
+              </tr>
+            ) : transactions?.data?.items?.length ? (
+              transactions.data.items.map((transaction) => (
+                <TransactionRowItem key={transaction.id} transaction={transaction} />
               ))
             ) : (
               <tr>
-                <td colSpan="4" className="px-4 py-2 text-center text-gray-500">
+                <td colSpan="5" className="px-4 py-2 text-center text-gray-500">
                   No se encontraron resultados.
                 </td>
               </tr>
@@ -132,19 +114,19 @@ export const TransactionsPage = () => {
         + Crear Partida
       </Link>
 
-      {/* Paginación
+      {/* Paginación */}
       <div className="mt-6 mb-6">
         <Pagination
-          totalPages={events?.data?.totalPages}
-          hasNextPage={events?.data?.hasNextPage}
-          hasPreviousPage={events?.data?.hasPreviousPage}
+          totalPages={transactions?.data?.totalPages}
+          hasNextPage={transactions?.data?.hasNextPage}
+          hasPreviousPage={transactions?.data?.hasPreviousPage}
           currentPage={currentPage}
           handleNextPage={handleNextPage}
           handlePreviousPage={handlePreviousPage}
           setCurrentPage={setCurrentPage}
           handleCurrentPage={handleCurrentPage}
         />
-      </div> */}
+      </div>
     </div>
   );
 };
