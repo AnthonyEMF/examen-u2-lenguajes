@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamenLenguajes2.API.Migrations
 {
     [DbContext(typeof(Examen2Context))]
-    [Migration("20241114175134_Init")]
-    partial class Init
+    [Migration("20241114220927_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
