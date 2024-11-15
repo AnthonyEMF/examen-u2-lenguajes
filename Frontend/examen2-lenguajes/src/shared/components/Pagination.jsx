@@ -1,53 +1,47 @@
 import { generateId } from "../utils";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export const Pagination = ({
-//   totalPages,
-//   handlePreviousPage = () => {},
-//   hasPreviousPage,
-//   handleCurrentPage,
-//   currentPage,
-//   handleNextPage = () => {},
-//   hasNextPage,
+    totalPages,
+    handleCurrentPage,
+    currentPage,
+    handlePreviousPage = () => {},
+    hasPreviousPage,
+    handleNextPage = () => {},
+    hasNextPage
 }) => {
-
-
   return (
-    <div className="flex">
+    <div className="flex justify-end space-x-2">
+      {/* Anterior */}
       <button
         onClick={handlePreviousPage}
         disabled={!hasPreviousPage}
-        className={`px-3 py-2 mx-1 font-medium bg-white text-gray-500 rounded-md ${
-          !hasPreviousPage
-            ? "cursor-not-allowed"
-            : "hover:bg-gray-400 hover:text-white"
-        }`}
+        className={`bg-gray-600 text-white px-4 py-2 rounded
+          ${!hasPreviousPage ? "cursor-not-allowed" : "hover:bg-gray-500"}`}
       >
-        Anterior
+          <FaArrowLeft />
       </button>
+
+      {/* Numeración */}
       {[...Array(totalPages)].map((value, index) => (
         <button
           key={generateId()}
           onClick={() => handleCurrentPage(index + 1)}
-          className={`px-3 py-2 mx-1 font-medium  rounded-md text-gray-700  ${
-            currentPage === index + 1
-              ? "bg-gray-600"
-              : "hover:bg-gray-600 hover:text-white"
-          }`}
+          className={`text-white px-4 py-2 rounded
+            ${currentPage === index + 1 ? "bg-gray-600 text-white" : "hover:bg-gray-500"}`}
         >
           {index + 1}
         </button>
       ))}
 
+      {/* Siguiente */}
       <button
         onClick={handleNextPage}
         disabled={!hasNextPage}
-        className={`px-3 py-2 mx-1 font-medium bg-white text-gray-500 rounded-md ${
-          !hasNextPage
-            ? "cursor-not-allowed"
-            : "hover:bg-gray-400 hover:text-white"
-        }`}
+        className={`bg-gray-600 text-white px-4 py-2 rounded
+          ${!hasNextPage ? "cursor-not-allowed" : "hover:bg-gray-500"}`}
       >
-        Siguiente
+        <FaArrowRight />
       </button>
     </div>
   );
