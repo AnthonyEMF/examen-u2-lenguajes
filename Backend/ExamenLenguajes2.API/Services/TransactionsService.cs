@@ -46,7 +46,7 @@ namespace ExamenLenguajes2.API.Services
 			if (!string.IsNullOrEmpty(searchTerm))
 			{
 				transactionsEntityQuery = transactionsEntityQuery
-					.Where(t => (t.Description + " " + t.User.UserName + " " + t.Date)
+					.Where(t => (t.Description + " " + t.Number + " " + t.User.FullName)
 					.ToLower().Contains(searchTerm.ToLower()));
 			}
 
@@ -54,7 +54,7 @@ namespace ExamenLenguajes2.API.Services
 			int totalPages = (int)Math.Ceiling((double)totalTransactions / PAGE_SIZE);
 
 			var transactionsEntity = await transactionsEntityQuery
-				.OrderByDescending(t => t.Date)
+				.OrderBy(t => t.Number)
 				.Skip(startIndex)
 				.Take(PAGE_SIZE)
 				.ToListAsync();
