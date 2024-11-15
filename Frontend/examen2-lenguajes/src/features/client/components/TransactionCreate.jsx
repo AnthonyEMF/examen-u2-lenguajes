@@ -1,22 +1,34 @@
-import { useState } from "react";
-
-const accounts = [
-  { id: 1, name: "Caja" },
-  { id: 2, name: "Bancos" },
-  { id: 3, name: "Cuentas por cobrar" },
-  // Agrega más cuentas según sea necesario
-];
+import { useEffect, useState } from "react";
+import { useTransactions } from "../hooks/useTransactions";
+import { useAccounts } from "../hooks/useAccounts";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 export const TransactionCreate = () => {
+  const { accounts, loadAccounts } = useAccounts();
+  const { createTransaction, isSubmitting, error } = useTransactions();
+  const [fetching, setFetching] = useState(true);
   const [description, setDescription] = useState("");
   const [entries, setEntries] = useState([]);
   const [totalCredit, setTotalCredit] = useState(0);
   const [totalDebit, setTotalDebit] = useState(0);
+  const navigate = useNavigate();
+
+  // Decodificar el token para obtener el UserId (npm install jwt-decode)
+  const userId = jwtDecode(localStorage.getItem("token")).UserId;
+
+  // Cargar cuentas
+  useEffect(() => {
+    if (fetching) {
+      loadAccounts();
+      setFetching(false);
+    }
+  }, [fetching]);
 
   const addEntry = () => {
     setEntries([
       ...entries,
-      { accountId: "", type: "DEBITO", amount: 0 },
+      { accountId: "", type: "DÉBITO", amount: 0 },
     ]);
   };
 
@@ -36,18 +48,52 @@ export const TransactionCreate = () => {
 
   const calculateTotals = (updatedEntries) => {
     const credit = updatedEntries
-      .filter(entry => entry.type === "CREDITO")
+      .filter(entry => entry.type === "CRÉDITO")
       .reduce((acc, entry) => acc + parseFloat(entry.amount || 0), 0);
     const debit = updatedEntries
-      .filter(entry => entry.type === "DEBITO")
+      .filter(entry => entry.type === "DÉBITO")
       .reduce((acc, entry) => acc + parseFloat(entry.amount || 0), 0);
     setTotalCredit(credit);
     setTotalDebit(debit);
   };
 
-  const registerTransaction = () => {
-    // Aquí puedes agregar la lógica para registrar la partida contable
-    alert("Partida registrada");
+  const handleSubmit = () => {
+    // Validaciones
+    if (!description) {
+      alert("Debe ingresar una descripción.");
+      return;
+    }
+    if (entries.length === 0) {
+      alert("Debe ingresar entradas.");
+      return;
+    }
+    for (const entry of entries) {
+      if (entry.amount <= 0) {
+        alert("El monto de las entradas debe ser mayor que cero.");
+        return;
+      }
+    }
+    if (totalDebit !== totalCredit) {
+      alert("El total de débitos debe debe cuadrar con el total de créditos.");
+      return;
+    }
+
+    const transactionData = {
+      userId, 
+      description,
+      entries: entries.map(entry => ({
+        accountId: entry.accountId,
+        amount: entry.amount,
+        type: entry.type,
+      })),
+    };
+
+    createTransaction(transactionData);
+
+    if (!error) {
+      alert("Partida creada con éxito");
+      navigate("/transactions"); 
+    }
   };
 
   return (
@@ -72,6 +118,7 @@ export const TransactionCreate = () => {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Descripción de la partida"
+          required
         />
       </div>
 
@@ -85,7 +132,7 @@ export const TransactionCreate = () => {
               onChange={(e) => handleEntryChange(index, "accountId", e.target.value)}
             >
               <option value="">Seleccione cuenta</option>
-              {accounts.map((account) => (
+              {accounts?.data?.items?.map((account) => (
                 <option key={account.id} value={account.id}>
                   {account.name}
                 </option>
@@ -97,8 +144,8 @@ export const TransactionCreate = () => {
               value={entry.type}
               onChange={(e) => handleEntryChange(index, "type", e.target.value)}
             >
-              <option value="DEBITO">Débito</option>
-              <option value="CREDITO">Crédito</option>
+              <option value="DÉBITO">Débito</option>
+              <option value="CRÉDITO">Crédito</option>
             </select>
 
             <input
@@ -132,11 +179,16 @@ export const TransactionCreate = () => {
         </div>
       </div>
 
+      {error && (
+        <div className="text-red-500 mt-4">{error.message}</div>
+      )}
+
       <button
-        onClick={registerTransaction}
+        onClick={handleSubmit}
         className="mt-4 bg-green-600 text-white px-4 py-2 rounded w-full"
+        disabled={isSubmitting}
       >
-        Registrar Partida
+        {isSubmitting ? "Registrando..." : "Registrar Partida"}
       </button>
     </div>
   );
