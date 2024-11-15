@@ -1,13 +1,42 @@
 import { useState } from "react";
-// import { IoSearchSharp } from "react-icons/io5";
 // import { Pagination } from "../../../shared/components/Pagination";
 
 export const BalancePage = () => {
   const [search, setSearch] = useState("");
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [searchTerm, setSearchTerm] = useState(selectedCategory || "");
+  // const [fetching, setFetching] = useState(true);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
   };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setFetching(true);
+  // };
+
+  // // Cambiar a una página especifica
+  // const handleCurrentPage = (index = 1) => {
+  //   setCurrentPage(index);
+  //   setFetching(true);
+  // };
+
+  // // Ir a página anterior
+  // const handlePreviousPage = () => {
+  //   if (events.data.hasPreviousPage) {
+  //     setCurrentPage((prevPage) => prevPage - 1);
+  //     setFetching(true);
+  //   }
+  // };
+
+  // // Ir a página siguiente
+  // const handleNextPage = () => {
+  //   if (events.data.hasNextPage) {
+  //     setCurrentPage((prevPage) => prevPage + 1);
+  //     setFetching(true);
+  //   }
+  // };
 
   const balances = [
     { code: "101", name: "Caja", month: "Enero", year: "2024", balance: "$1,000.00" },
@@ -87,6 +116,19 @@ export const BalancePage = () => {
           </table>
         </div>
       </div>
+      {/* Paginación
+      <div className="mt-6 mb-6">
+        <Pagination
+          totalPages={events?.data?.totalPages}
+          hasNextPage={events?.data?.hasNextPage}
+          hasPreviousPage={events?.data?.hasPreviousPage}
+          currentPage={currentPage}
+          handleNextPage={handleNextPage}
+          handlePreviousPage={handlePreviousPage}
+          setCurrentPage={setCurrentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      </div> */}
     </div>
     )
   }

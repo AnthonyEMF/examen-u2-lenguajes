@@ -1,7 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import {HomePage, TransactionsPage, BalancePage, CatalogsPage, LogPage } from '../pages';
 import { Nav } from '../components/Nav';
-import { AccountCreate, TransactionCreate } from '../components';
+import { AccountCreate, TransactionCreate, TransactionDetails } from '../components';
 
 export const ClientRouter = () => {
   return (
@@ -17,8 +17,8 @@ export const ClientRouter = () => {
                 <Route path='/logs' element={<LogPage />}/>
                 <Route path='/post/transactions' element={<TransactionCreate />}/>
                 <Route path='/post/account' element={<AccountCreate />}/>
-                {/* <Route path='/details/transactions' element={<TransactionsDetails />}/> */}
-                {/* <Route path='/*' element={<Navigate to={"/home"} />} /> */}
+                <Route path='/transactions-details/:id' element={<TransactionDetails />}/>
+                <Route path='/*' element={<Navigate to={"/security/login"} />} />
             </Routes>
         </div>
       </div> 

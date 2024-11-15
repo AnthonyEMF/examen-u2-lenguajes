@@ -16,84 +16,111 @@ const initialTransactions = [
 ];
 
 export const TransactionsPage = () => {
-  const [transactions, setTransactions] = useState(initialTransactions);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState("");
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [searchTerm, setSearchTerm] = useState(selectedCategory || "");
+  // const [fetching, setFetching] = useState(true);
 
-  const toggleStatus = (number) => {
-    setTransactions((prevTransactions) =>
-      prevTransactions.map((transaction) =>
-        transaction.number === number
-          ? { ...transaction, status: transaction.status === "Activa" ? "Desactivada" : "Activa" }
-          : transaction
-      )
-    );
-  };
-
-  const filteredTransactions = transactions.filter(transaction =>
-    transaction.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTransactions = initialTransactions.filter(transaction =>
+    transaction.description.toLowerCase().includes(search.toLowerCase())
   );
 
-  return (
-    <div className="flex flex-col items-center w-full h-full p-4">
-      <h1 className="text-2xl font-bold mb-4">Partidas Contables</h1>
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setFetching(true);
+  // };
 
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-md p-4">
-        <div className="mb-4">
+  // // Cambiar a una página especifica
+  // const handleCurrentPage = (index = 1) => {
+  //   setCurrentPage(index);
+  //   setFetching(true);
+  // };
+
+  // // Ir a página anterior
+  // const handlePreviousPage = () => {
+  //   if (events.data.hasPreviousPage) {
+  //     setCurrentPage((prevPage) => prevPage - 1);
+  //     setFetching(true);
+  //   }
+  // };
+
+  // // Ir a página siguiente
+  // const handleNextPage = () => {
+  //   if (events.data.hasNextPage) {
+  //     setCurrentPage((prevPage) => prevPage + 1);
+  //     setFetching(true);
+  //   }
+  // };
+
+  return (
+    <div className="flex flex-col items-center w-full h-full p-4 bg-gray-100">
+      <div className="w-full max-w-3xl p-6 bg-white rounded-lg shadow-md">
+        <div className="flex items-center justify-between pb-4 border-b">
+          <h1 className="text-2xl font-bold text-gray-800">Partidas Contables</h1>
           <input
             type="text"
             placeholder="Buscar partida..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-gray-500"
           />
         </div>
-        <table className="min-w-full divide-y divide-gray-200">
+        
+        <table className="min-w-full divide-y divide-gray-200 mt-6">
           <thead>
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Número
+              <th className="px-4 py-2 text-left text-gray-600 border-b">
+                NÚMERO
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Descripción
+              <th className="px-4 py-2 text-left text-gray-600 border-b">
+                DESCRIPCIÓN
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Estado
+              <th className="px-4 py-2 text-left text-gray-600 border-b">
+                ESTADO
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Acción
+              <th className="px-4 py-2 text-left text-gray-600 border-b">
+                ACCIONES
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredTransactions.map((transaction) => (
-              <tr key={transaction.number}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {transaction.number}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {transaction.description}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      transaction.status === "Activa"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {transaction.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <button
-                    onClick={() => toggleStatus(transaction.number)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-1 rounded"
-                  >
-                    Cambiar estado
-                  </button>
+            {filteredTransactions.length > 0 ? (
+              filteredTransactions.map((transaction) => (
+                <tr key={transaction.number}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {transaction.number}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {transaction.description}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        transaction.status === "Activa"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {transaction.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <Link
+                      to={`/transactions-details/:id`}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      Ver detalles
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="px-4 py-2 text-center text-gray-500">
+                  No se encontraron resultados.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -104,6 +131,20 @@ export const TransactionsPage = () => {
       >
         + Crear Partida
       </Link>
+
+      {/* Paginación
+      <div className="mt-6 mb-6">
+        <Pagination
+          totalPages={events?.data?.totalPages}
+          hasNextPage={events?.data?.hasNextPage}
+          hasPreviousPage={events?.data?.hasPreviousPage}
+          currentPage={currentPage}
+          handleNextPage={handleNextPage}
+          handlePreviousPage={handlePreviousPage}
+          setCurrentPage={setCurrentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      </div> */}
     </div>
   );
 };

@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom"
+import { useAuthStore } from "../../security/store";
 
 export const Nav = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const logout = useAuthStore((state) => state.logout);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+    const handleLogout = () => {
+      logout();
+    }
 
     const handleMenuToggle = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -34,37 +41,50 @@ export const Nav = () => {
           >
             Inicio
           </Link>
-          <Link
-            to="/catalogs"
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
-          >
-            Catálogo de Cuentas
-          </Link>
-          <Link
-            to="/transactions"
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
-          >
-            Partidas Contables
-          </Link>
-          <Link
-            to="/balances"
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
-          >
-            Saldos de Cuentas
-          </Link>
-          <Link
-            to="/logs"
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
-          >
-            Registros
-          </Link>
+
+          {isAuthenticated && (
+            <>
+              <Link
+                to="/catalogs"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+              >
+                Catálogo de Cuentas
+              </Link>
+              <Link
+                to="/transactions"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+              >
+                Partidas Contables
+              </Link>
+              <Link
+                to="/balances"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+              >
+                Saldos de Cuentas
+              </Link>
+              <Link
+                to="/logs"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+              >
+                Registros
+              </Link>
+            </>
+          )}
           
+           {isAuthenticated ? (
+            <button 
+            onClick={handleLogout}
+            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0">
+                Cerrar Sesión
+            </button>
+          ) : ( 
             <Link
             to="/security/login"
             className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
           >
             Iniciar Sesión
           </Link>  
+         )} 
         </div>
       </div>
     </nav>

@@ -21,7 +21,7 @@ export const HomePage = () => {
             <h2 className="text-xl font-semibold mb-2 text-gray-700">Partidas Contables</h2>
             <p className="text-gray-500 mb-6">Crea y gestiona las partidas contables fácilmente.</p>
             <Link to="/transactions" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-              Ir a Partidas
+              Ver Partidas
             </Link>
           </div>
 

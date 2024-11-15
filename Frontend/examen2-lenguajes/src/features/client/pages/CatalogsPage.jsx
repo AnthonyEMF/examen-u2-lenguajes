@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 
 export const CatalogsPage = () => {
   const [search, setSearch] = useState("");
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [searchTerm, setSearchTerm] = useState(selectedCategory || "");
+  // const [fetching, setFetching] = useState(true);
+
   const [accounts, setAccounts] = useState([
     { code: "101", name: "Caja", allowsMovements: true, isActive: true },
     { code: "102", name: "Bancos", allowsMovements: true, isActive: true },
@@ -43,6 +47,33 @@ export const CatalogsPage = () => {
     account.name.toLowerCase().includes(search.toLowerCase()) ||
     account.code.includes(search)
   );
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setFetching(true);
+  // };
+
+  // // Cambiar a una página especifica
+  // const handleCurrentPage = (index = 1) => {
+  //   setCurrentPage(index);
+  //   setFetching(true);
+  // };
+
+  // // Ir a página anterior
+  // const handlePreviousPage = () => {
+  //   if (events.data.hasPreviousPage) {
+  //     setCurrentPage((prevPage) => prevPage - 1);
+  //     setFetching(true);
+  //   }
+  // };
+
+  // // Ir a página siguiente
+  // const handleNextPage = () => {
+  //   if (events.data.hasNextPage) {
+  //     setCurrentPage((prevPage) => prevPage + 1);
+  //     setFetching(true);
+  //   }
+  // };
 
   return (
     <div className="relative flex flex-col items-center w-full h-full p-8 bg-gray-100">
@@ -107,6 +138,20 @@ export const CatalogsPage = () => {
       >
         + Crear Cuenta
       </Link>
+
+      {/* Paginación
+      <div className="mt-6 mb-6">
+        <Pagination
+          totalPages={events?.data?.totalPages}
+          hasNextPage={events?.data?.hasNextPage}
+          hasPreviousPage={events?.data?.hasPreviousPage}
+          currentPage={currentPage}
+          handleNextPage={handleNextPage}
+          handlePreviousPage={handlePreviousPage}
+          setCurrentPage={setCurrentPage}
+          handleCurrentPage={handleCurrentPage}
+        />
+      </div> */}
     </div>
   );
 };
