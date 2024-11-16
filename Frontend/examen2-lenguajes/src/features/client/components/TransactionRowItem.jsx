@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { formatDateShort } from "../../../shared/utils/format-date"
 
 export const TransactionRowItem = ({transaction}) => {
   return (
@@ -6,8 +7,14 @@ export const TransactionRowItem = ({transaction}) => {
         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
           {transaction.number}
         </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <td className="px-6 py-4 whitespace-nowrap text-sm ">
+          {formatDateShort(transaction.date)}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm ">
           {transaction.description}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm">
+          {transaction.userName}
         </td>
         <td className="px-6 py-4 whitespace-nowrap text-sm">
           <span

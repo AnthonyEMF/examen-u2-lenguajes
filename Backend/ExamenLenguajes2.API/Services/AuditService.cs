@@ -21,7 +21,7 @@ namespace ExamenLenguajes2.API.Services
 			return idClaim.Value;
 		}
 
-		// Activar para cargar el Seed de Datos
+		// IMPORTANTE: ACTIVAR LA SIGUIENTE FUNCIÓN PARA CARGAR EL SEEDER
 		//public string GetUserId()
 		//{
 		//	return "2a373bd7-1829-4bb4-abb7-19da4257891d";

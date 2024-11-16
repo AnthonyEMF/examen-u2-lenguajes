@@ -46,7 +46,7 @@ export const TransactionsPage = () => {
 
   return (
     <div className="flex flex-col items-center w-full h-full p-4 bg-gray-100">
-      <div className="w-full max-w-3xl p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-5xl p-6 bg-white rounded-lg shadow-md">
         <div className="flex items-center justify-between pb-4 border-b">
           <h1 className="text-2xl font-bold text-gray-800">Partidas Contables</h1>
           <form onSubmit={handleSubmit}>
@@ -68,20 +68,26 @@ export const TransactionsPage = () => {
             </form>
         </div>
         
-        <table className="min-w-full divide-y divide-gray-200 mt-6">
+        <table className="min-w-full divide-y divide-gray-200 mt-3">
           <thead>
             <tr>
               <th className="px-4 py-2 text-left text-gray-600 border-b">
                 NÚMERO
               </th>
               <th className="px-4 py-2 text-left text-gray-600 border-b">
+                FECHA
+              </th>
+              <th className="px-4 py-2 text-left text-gray-600 border-b">
                 DESCRIPCIÓN
+              </th>
+              <th className="px-4 py-2 text-left text-gray-600 border-b">
+                USUARIO
               </th>
               <th className="px-4 py-2 text-left text-gray-600 border-b">
                 ESTADO
               </th>
               <th className="px-4 py-2 text-left text-gray-600 border-b">
-                ACCIONES
+                DETALLES
               </th>
             </tr>
           </thead>
@@ -108,10 +114,10 @@ export const TransactionsPage = () => {
       </div>
 
       <Link
-        className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700"
+        className="fixed bottom-8 right-8 bg-green-600 text-white rounded-full p-4 shadow-lg hover:bg-green-700"
         to="/post/transactions"
       >
-        + Crear Partida
+        + Crear Nueva Partida
       </Link>
 
       {/* Paginación */}

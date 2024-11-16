@@ -91,20 +91,21 @@ export const TransactionCreate = () => {
     createTransaction(transactionData);
 
     if (!error) {
-      alert("Partida creada con éxito");
-      navigate("/transactions"); 
+      alert("Partida registrada con éxito, se han actualizado los saldos.");
     }
+
+    navigate("/home"); 
   };
 
   return (
-    <div className="p-4 bg-white rounded shadow-md max-w-3xl mx-auto">
+    <div className="p-4 bg-white rounded shadow-md max-w-3xl mx-auto my-6">
       <h1 className="text-2xl font-bold mb-4">Crear Partida Contable</h1>
 
       <div className="mb-4">
         <label className="block text-gray-700">Fecha:</label>
         <input
           type="text"
-          className="w-full mt-1 p-2 border rounded"
+          className="w-full bg-gray-200 mt-1 p-2 border rounded"
           value={new Date().toLocaleDateString()}
           readOnly
         />
@@ -132,11 +133,13 @@ export const TransactionCreate = () => {
               onChange={(e) => handleEntryChange(index, "accountId", e.target.value)}
             >
               <option value="">Seleccione cuenta</option>
-              {accounts?.data?.items?.map((account) => (
-                <option key={account.id} value={account.id}>
-                  {account.name}
-                </option>
-              ))}
+              {accounts?.data?.items
+                ?.filter(account => account.allowMovement) 
+                .map((account) => (
+                  <option key={account.id} value={account.id}>
+                    {account.name}
+                  </option>
+                ))}
             </select>
 
             <select
@@ -173,10 +176,16 @@ export const TransactionCreate = () => {
       </div>
 
       <div className="mt-4">
-        <div className="flex justify-between">
-          <span>Total Débito: {totalDebit.toFixed(2)}</span>
-          <span>Total Crédito: {totalCredit.toFixed(2)}</span>
-        </div>
+        {entries.length > 0 && (
+          <div className="flex justify-between font-bold">
+            <span>
+              Total Débito: <span className="text-blue-700">${totalDebit.toFixed(2)}</span>
+            </span>
+            <span>
+              Total Crédito: <span className="text-blue-700">${totalCredit.toFixed(2)}</span>
+            </span>
+          </div>
+        )}
       </div>
 
       {error && (

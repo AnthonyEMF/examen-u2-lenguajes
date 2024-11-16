@@ -69,10 +69,10 @@ export const BalancePage = () => {
           <table className="min-w-full bg-white border border-gray-200 rounded-md">
             <thead>
               <tr>
-                <th className="px-4 py-2 text-left text-gray-600 border-b">CÓDIGO DE CUENTA</th>
-                <th className="px-4 py-2 text-left text-gray-600 border-b">NOMBRE DE CUENTA</th>
+                <th className="px-4 py-2 text-left text-gray-600 border-b">CÓDIGO DE SALDO</th>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">MES</th>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">AÑO</th>
+                <th className="px-4 py-2 text-left text-gray-600 border-b">CUENTA</th>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">SALDO</th>
               </tr>
             </thead>

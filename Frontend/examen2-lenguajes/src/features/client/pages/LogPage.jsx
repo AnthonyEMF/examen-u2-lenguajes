@@ -48,7 +48,7 @@ export const LogPage = () => {
     <div className="flex flex-col items-center w-full h-full p-8 bg-gray-100">
     <div className="w-full max-w-5xl p-6 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-between pb-4 border-b">
-        <h2 className="text-2xl font-bold text-gray-800">Registro de Actividades</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Historial de Registros</h2>
         <form onSubmit={handleSubmit}>
           <div className="flex">
             <input
@@ -72,7 +72,7 @@ export const LogPage = () => {
             <tr>
               <th className="px-4 py-2 text-left text-gray-600 border-b">Acción</th>
               <th className="px-4 py-2 text-left text-gray-600 border-b">Descripción</th>
-              <th className="px-4 py-2 text-left text-gray-600 border-b">Correo del Usuario</th>
+              <th className="px-4 py-2 text-left text-gray-600 border-b">Usuario</th>
               <th className="px-4 py-2 text-left text-gray-600 border-b">Fecha</th>
             </tr>
           </thead>

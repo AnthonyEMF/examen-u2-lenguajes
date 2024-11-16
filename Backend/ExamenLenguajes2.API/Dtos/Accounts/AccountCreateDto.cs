@@ -6,7 +6,7 @@ namespace ExamenLenguajes2.API.Dtos.Accounts
 	{
 		public Guid? ParentId { get; set; }
 
-		[Required(ErrorMessage = "El nombre de la cuenta es requerido.")]
+        [Required(ErrorMessage = "El nombre de la cuenta es requerido.")]
 		public string Name { get; set; }
 
 	}

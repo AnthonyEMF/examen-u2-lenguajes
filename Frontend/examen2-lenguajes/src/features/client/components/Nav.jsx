@@ -19,7 +19,7 @@ export const Nav = () => {
       <div className="container flex flex-col mx-auto md:flex-row md:items-center md:justify-between">
         <div className="flex items-center justify-between">
           <div>
-            <Link to="/home" className="text-xl font-bold text-white md:text-2xl">
+            <Link to="/home" className="text-xl font-bold text-white md:text-2xl hover:text-gray-300">
               Sis-Pa-Co
             </Link>
           </div>
@@ -35,38 +35,32 @@ export const Nav = () => {
           </div>
         </div>
         <div className={`${isMenuOpen ? "flex" : "hidden"} flex-col md:flex md:flex-row md:mx-4`}>
-          <Link
-            to="/home"
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
-          >
-            Inicio
-          </Link>
 
           {isAuthenticated && (
             <>
               <Link
+                to="/transactions"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0 hover:text-gray-300"
+              >
+                Partidas
+              </Link>
+              <Link
                 to="/catalogs"
-                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0 hover:text-gray-300"
               >
                 Catálogo de Cuentas
               </Link>
               <Link
-                to="/transactions"
-                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
-              >
-                Partidas Contables
-              </Link>
-              <Link
                 to="/balances"
-                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0 hover:text-gray-300"
               >
-                Saldos de Cuentas
+                Saldos
               </Link>
               <Link
                 to="/logs"
-                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+                className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0 hover:text-gray-300"
               >
-                Registros
+                Historial
               </Link>
             </>
           )}
@@ -75,13 +69,13 @@ export const Nav = () => {
             <Link
             to={'/home'} 
             onClick={handleLogout}
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0">
+            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0 hover:text-gray-300">
                 Cerrar Sesión
             </Link>
           ) : ( 
             <Link
             to="/security/login"
-            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0"
+            className="my-1 text-white hover:text-unah-yellow md:mx-4 md:my-0 hover:text-gray-300"
           >
             Iniciar Sesión
           </Link>  

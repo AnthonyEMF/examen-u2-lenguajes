@@ -27,7 +27,7 @@ export const TransactionDetails = () => {
       try {
         // Cambiar el estado de la partida a inactiva
         await editTransaction(id, { isActive: false });
-        alert("Partida dada de baja exitosamente.");
+        alert("Partida dada de baja exitosamente, se reajustaron los saldos.");
         navigate('/transactions');
       } catch (error) {
         console.error("Error al dar de baja la partida:", error);
@@ -36,7 +36,7 @@ export const TransactionDetails = () => {
     };
 
     return (
-      <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-md">
+      <div className="max-w-4xl mb-8 mt-8 mx-auto p-6 bg-white shadow-md rounded-md">
       <h1 className="text-2xl font-semibold mb-4">Detalles de la Partida Contable</h1>
 
       <div className="flex flex-col space-y-4 mb-6">
@@ -100,22 +100,24 @@ export const TransactionDetails = () => {
 
       <div className="mt-6 flex justify-between">
         <div>
-          <span className="text-sm font-medium text-gray-600">Total Débito:</span>
-          <span className="font-semibold">{transaction.data.totalDebit}</span>
+          <span className="text-sm font-medium">Total Débito:</span>
+          <span className="font-semibold text-blue-700"> ${transaction.data.totalDebit}</span>
         </div>
         <div>
-          <span className="text-sm font-medium text-gray-600">Total Crédito:</span>
-          <span className="font-semibold">{transaction.data.totalCredit}</span>
+          <span className="text-sm font-medium">Total Crédito:</span>
+          <span className="font-semibold text-blue-700"> ${transaction.data.totalCredit}</span>
         </div>
       </div>
 
       <div className="flex mt-6 justify-center">
-        <button
-          onClick={handleEditTransaction}
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-        >
-          Dar de Baja la Partida
-        </button>
+        {transaction.data.isActive && (
+          <button
+            onClick={handleEditTransaction}
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          >
+            Dar de Baja la Partida
+          </button>
+        )}
       </div>
     </div>
   )

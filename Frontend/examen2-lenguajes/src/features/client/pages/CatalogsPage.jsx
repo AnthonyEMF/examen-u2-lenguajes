@@ -72,7 +72,7 @@ export const CatalogsPage = () => {
               <tr>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">CÓDIGO DE CUENTA</th>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">NOMBRE</th>
-                <th className="px-4 py-2 text-left text-gray-600 border-b">MOVIMIENTOS</th>
+                <th className="px-4 py-2 text-left text-gray-600 border-b">MOVIMIENTO</th>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">ESTADO</th>
                 <th className="px-4 py-2 text-left text-gray-600 border-b">ACCIÓN</th>
               </tr>
@@ -100,10 +100,10 @@ export const CatalogsPage = () => {
         </div>
       </div>
       <Link
-        className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700"
+        className="fixed bottom-8 right-8 bg-green-600 text-white rounded-full p-4 shadow-lg hover:bg-green-700"
         to="/post/account"
       >
-        + Crear Cuenta
+        + Crear Nueva Cuenta
       </Link>
 
       {/* Paginación */}
